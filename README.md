@@ -12,5 +12,5 @@ A complete QA test suite for [SauceDemo](https://www.saucedemo.com) covering man
 - /tests — automated Selenium test scripts
 - /reports — test execution reports
 
-## Author
+## Authorgit
 [Subash Mahato] — Certified Software QA Analyst
