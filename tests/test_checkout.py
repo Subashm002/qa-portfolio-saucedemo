@@ -12,6 +12,9 @@ class TestCheckout:
         driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack").click()
         driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
         driver.find_element(By.ID, "checkout").click()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "first-name"))
+        )
 
     def test_checkout_with_valid_details(self, driver):
         self.setup_cart(driver)
@@ -19,8 +22,13 @@ class TestCheckout:
         driver.find_element(By.ID, "last-name").send_keys("Mahato")
         driver.find_element(By.ID, "postal-code").send_keys("44600")
         driver.find_element(By.ID, "continue").click()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "finish"))
+        )
         driver.find_element(By.ID, "finish").click()
-        confirmation = driver.find_element(By.CLASS_NAME, "complete-header")
+        confirmation = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "complete-header"))
+        )
         assert "Thank you" in confirmation.text
 
     def test_checkout_empty_firstname(self, driver):
@@ -28,7 +36,9 @@ class TestCheckout:
         driver.find_element(By.ID, "last-name").send_keys("Mahato")
         driver.find_element(By.ID, "postal-code").send_keys("44600")
         driver.find_element(By.ID, "continue").click()
-        error = driver.find_element(By.CSS_SELECTOR, "[data-test='error']")
+        error = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-test='error']"))
+        )
         assert "First Name is required" in error.text
 
     def test_checkout_empty_lastname(self, driver):
@@ -36,7 +46,9 @@ class TestCheckout:
         driver.find_element(By.ID, "first-name").send_keys("Subash")
         driver.find_element(By.ID, "postal-code").send_keys("44600")
         driver.find_element(By.ID, "continue").click()
-        error = driver.find_element(By.CSS_SELECTOR, "[data-test='error']")
+        error = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-test='error']"))
+        )
         assert "Last Name is required" in error.text
 
     def test_checkout_empty_zipcode(self, driver):
@@ -44,5 +56,7 @@ class TestCheckout:
         driver.find_element(By.ID, "first-name").send_keys("Subash")
         driver.find_element(By.ID, "last-name").send_keys("Mahato")
         driver.find_element(By.ID, "continue").click()
-        error = driver.find_element(By.CSS_SELECTOR, "[data-test='error']")
+        error = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-test='error']"))
+        )
         assert "Postal Code is required" in error.text
