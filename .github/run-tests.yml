@@ -1,0 +1,36 @@
+name: QA Automation Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: pip install selenium pytest pytest-html webdriver-manager
+
+    - name: Install Edge
+      uses: browser-actions/setup-edge@latest
+
+    - name: Run tests
+      run: pytest tests/ --html=reports/report.html --self-contained-html -v
+
+    - name: Upload report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-report
+        path: reports/report.html
